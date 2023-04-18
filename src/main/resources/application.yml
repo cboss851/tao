@@ -1,0 +1,77 @@
+spring:
+  profiles:
+    active: dev
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    locale: zh
+  #数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      max-wait: 60000
+      keep-alive: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      filters: stat,wall,mergeStat,slf4j
+      aop-patterns: com.mars.dal.*
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      filter:
+        config:
+          enabled: true
+        stat:
+          enabled: true
+          merge-sql: true
+          log-slow-sql: true
+          slow-sql-millis: 5000
+          db-type: mysql
+        wall:
+          enabled: true
+          db-type: mysql
+          config:
+            multi-statement-allow: true
+      web-stat-filter:
+        enabled: true
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+        session-stat-enable: true
+        profile-enable: true
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: true
+        allow: ""
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+#日志
+logging:
+  config: classpath:logback/logback.xml
+
+server:
+  port: 8686
+  servlet:
+    session:
+      cookie:
+        http-only: false
+        secure: false
+  tomcat:
+    connection-timeout: 30000
+
+
+#
+#mybatis:
+#  type-aliases-package: com.tao.space.dal.model
+#  mapper-locations:
+#    - classpath*:/mybatis/default/*.xml
+#    - classpath*:/mybatis/custom/*.xml
+#  check-config-location: true
+#  configuration:
+#    map-underscore-to-camel-case: true
+#    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
